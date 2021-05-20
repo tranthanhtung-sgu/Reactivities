@@ -10,6 +10,7 @@
     "@types/node": "^12.20.13",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.5",
+    "@types/uuid": "^8.3.0",
     "axios": "^0.21.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -29,7 +30,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -42,5 +46,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react": "^7.23.2"
   }
 }
