@@ -1,68 +1,30 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import axios from "axios";
+import React, { Fragment, useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
-import { Activity } from './models/activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../feature/activities/dashboard/ActivityDashboard';
-import { v4 as uuid } from 'uuid';
+import LoadingComponent from './LoadingComponent';
+import { useStore } from '../stores/store';
+import { observer } from 'mobx-react-lite';
+
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
-  const [editMode, setEditMode] = useState(false);
+  const {activityStore} = useStore();
   useEffect(() => {
-    axios.get<Activity[]>('http://localhost:5000/api/activities').then(response => {
-      setActivities(response.data);
-    })
-  }, [])
+    activityStore.loadActivities();
+  }, [activityStore])
 
-  function handleSelectedActivity(id: string) {
-    setSelectedActivity(activities.find(x=>x.id === id))
-  }
-
-  function handleCancelSelectActivity() {
-    setSelectedActivity(undefined);
-  }
-
-  function handleOpenForm(id?: string) {
-    id ? handleSelectedActivity(id) : handleCancelSelectActivity(); 
-    setEditMode(true);
-  }
-
-  function handleCloseForm() {
-    setEditMode(false);
-  }
-  
-  function handleCreateOrEditActivity(activity: Activity) {
-    activity.id // check undefined ?
-      ? setActivities([...activities.filter(x=>x.id !== activity.id), activity]) // `undefined` => update
-      : setActivities([...activities, {...activity, id: uuid()} ]);  //`not undefined` => create
-    setEditMode(false);
-    setSelectedActivity(activity);
-  }
-
-  function handleDeleteActivity(id: string) {
-    setActivities([...activities.filter(x=>x.id !== id)]);
+  if (activityStore.loadingInitial) { 
+    return <LoadingComponent content={"Loading..."} />
   }
 
   return (
     <Fragment>
-      <NavBar openForm={handleOpenForm} />
+      <NavBar />
       <Container style={{marginTop: '7em'}}>
-        <ActivityDashboard 
-          activities={activities}
-          selectedActivity={selectedActivity}
-          selectActivity={handleSelectedActivity}
-          cancelSelectActivity={handleCancelSelectActivity}
-          editMode={editMode}
-          closeForm={handleCloseForm}
-          openForm={handleOpenForm}
-          createOrEdit={handleCreateOrEditActivity}
-          deleteActivity={handleDeleteActivity}
-        />
+        <ActivityDashboard />
       </Container>
     </Fragment>
   );
 }
 
-export default App;
+export default observer(App);
