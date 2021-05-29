@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Activites;
 using Application.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
