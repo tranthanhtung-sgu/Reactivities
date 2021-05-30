@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 
 namespace Domain
 {
@@ -11,5 +12,6 @@ namespace Domain
         public string Category { get; set; }
         public string City { get; set; }
         public string Venue { get; set; }
+        public Collection<ActivityAttendee> Attendees { get; set; } = new Collection<ActivityAttendee>();
     }
 }
