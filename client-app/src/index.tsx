@@ -10,6 +10,8 @@ import 'react-calendar/dist/Calendar.css';
 import 'react-datepicker/dist/react-datepicker.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import { createBrowserHistory } from 'history';
+import '@fortawesome/fontawesome-free/js/all.js';
+
 
 export const history = createBrowserHistory();
 

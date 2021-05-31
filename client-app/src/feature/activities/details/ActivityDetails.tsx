@@ -16,6 +16,7 @@ export default observer(function ActivityDetails() {
 
   useEffect(() => {
     if (id) loadActivity(id);
+    window.scrollTo(0, 0);
   }, [id, loadActivity]);
 
   if (loadingInitial || !activity) return <LoadingComponent />;
@@ -27,7 +28,7 @@ export default observer(function ActivityDetails() {
         <ActivityDetailedChat />
       </Grid.Column>
       <Grid.Column width='6'>
-        <ActivityDetailedSidebar />
+        <ActivityDetailedSidebar activity={activity} />
       </Grid.Column>
     </Grid>
   );
