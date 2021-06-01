@@ -1,6 +1,7 @@
 using Application.Activites;
 using Application.Core;
 using Application.Interfaces;
+using Infrastructure.Photos;
 using Infrastructure.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ namespace API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, 
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services,
                     IConfiguration config)
         {
             services.AddSwaggerGen(c =>
@@ -24,19 +25,23 @@ namespace API.Extensions
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
-            services.AddCors(opt => {
-                 opt.AddPolicy("CorsPolicy", policy => {
-                     policy.AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials()
-                            .WithOrigins("http://localhost:3000");
-                 });
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                           .AllowAnyMethod()
+                           .AllowCredentials()
+                           .WithOrigins("http://localhost:3000");
+                });
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
             services.AddScoped<IUserAccessor, UserAccessor>();
-            
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+
             return services;
         }
     }

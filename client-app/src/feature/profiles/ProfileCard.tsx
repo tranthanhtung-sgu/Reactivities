@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Card, CardContent, Container, Grid, GridColumn, Image, Segment } from "semantic-ui-react";
+import { Button, Card, Grid, GridColumn, Image } from "semantic-ui-react";
 // import { Card, Container, Grid, GridRow, Header, Icon, Image } from "semantic-ui-react";
 import { Profile } from "../../app/layout/models/profile";
 import "./profileCard.css";

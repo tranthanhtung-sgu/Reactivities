@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using API.DTOs;
 using API.Extensions;
@@ -30,7 +31,9 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.Users
+                .Include(x=>x.Photos)
+                .FirstOrDefaultAsync(u=>u.Email == loginDto.Email);
 
             if (user == null)
             {
@@ -81,7 +84,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByEmailAsync(User.GetUserEmail());
+            var user = await _userManager.Users
+                    .Include(x=>x.Photos)
+                    .FirstOrDefaultAsync(u=>u.Email == User.GetUserEmail());
 
             return CreateUserObject(user);
         }
@@ -93,7 +98,7 @@ namespace API.Controllers
                 DisplayName = user.DisplayName,
                 Email = user.Email,
                 Username = user.UserName,
-                Image = null,
+                Image = user?.Photos?.FirstOrDefault(x=>x.IsMain)?.Url,
                 Token = _tokenService.CreateToken(user)
             };
         }
