@@ -1,0 +1,96 @@
+.bg-light {
+  background-color: #f0f2f5 !important;
+}
+/* .ui.container {
+    max-width: 1200px;
+} */
+button.btn.btn-block.btn-rounded.fs-5.text-muted {
+  background-color: rgb(240, 242, 245) !important;
+}
+button.btn.btn-block.btn-rounded.fs-5.text-muted:hover {
+  background-color: rgb(228, 230, 235) !important;
+}
+button.btn.btn-light.rounded-3.fs-5 {
+  background-color: white !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+}
+button.btn.btn-light.rounded-3.fs-5:hover {
+  background-color: rgb(240, 242, 245) !important;
+}
+a.text-muted.underline__like {
+  margin-bottom: 5px;
+  margin-left: 5px;
+  font-size: medium;
+  margin-top: 2px;
+}
+a.text-muted.underline__like:hover {
+  text-decoration: underline;
+}
+.like_comment_share {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.comment__others {
+  border-radius: 18px;
+  word-wrap: normal;
+  position: relative;
+  display: block;
+  /* padding-left: 15px;
+  padding-right: 15px; */
+  padding-inline: 15px;
+  padding-top: 5px;
+}
+.comment__others > a:hover {
+  text-decoration: underline;
+}
+.btn__options_comment {
+  border-radius: 100% !important;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  background-color: white !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+
+.btn__options_comment:hover {
+  background-color: rgb(240, 242, 245) !important;
+  color: #0c0c0c !important;
+}
+.comment__content > a:hover {
+  text-decoration: underline;
+}
+.btn__images {
+  background-color: white !important;
+  color: #1266f1 !important;
+  box-shadow: none !important;
+  text-align: center !important;
+  font-size: 1.25rem !important;
+  margin-top: -5px !important;
+}
+.button__options__image {
+  transform: translate(90px, 42px) !important;
+  display: block !important;
+  height: 40px;
+  width: 40px;
+  opacity: 40%;
+  border-bottom-left-radius: 50% !important;
+  border-top-left-radius: 50% !important;
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important;
+}
+.lightbox {
+  margin-top: -25px;
+}
+.btn.btn-link.text-reset.fs-6.rounded-4.mx-1.img__mainphoto {
+  text-transform: none !important;
+  width: 100%;
+  text-align: start;
+}
+.btn.btn-link.text-reset.fs-6.rounded-4.mx-1.img__delete {
+  text-transform: none !important;
+  width: 100%;
+  text-align: start;
+}

@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity, ActivityFormValues } from "../layout/models/activity";
+import { Photo } from "../layout/models/profile";
 import { User, UserFormValues } from "../layout/models/user";
 import { store } from "../stores/store";
 
@@ -13,26 +14,26 @@ const sleep = (delay: number) => {
 
 axios.defaults.baseURL = "http://localhost:5000/api";
 
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config) => {
   const token = store.commonStore.token;
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
-})
+});
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(1000);
+    await sleep(0);
     return response;
   },
   (error: AxiosError) => {
     const { data, status, config } = error.response!;
     switch (status) {
       case 400:
-        if (typeof(data) === 'string') {
+        if (typeof data === "string") {
           toast.error(data);
         }
-        if (config.method === 'get' && data.errors.hasOwnProperty('id')) {
-          history.push('/not-found'); 
+        if (config.method === "get" && data.errors.hasOwnProperty("id")) {
+          history.push("/not-found");
         }
         if (data.errors) {
           const modalStateErrors = [];
@@ -74,18 +75,34 @@ const Activities = {
   create: (activity: ActivityFormValues) => request.post<void>(`/activities`, activity),
   update: (activity: ActivityFormValues) => request.put<void>(`/activities/${activity.id}`, activity),
   del: (id: string) => request.del<void>(`/activities/${id}`),
-  attend: (id: string) => request.post<void>(`/activities/${id}/attend`, id)
+  attend: (id: string) => request.post<void>(`/activities/${id}/attend`, id),
 };
 
 const Account = {
-  current: () => request.get<User>('/account'),
-  login: (user: UserFormValues) => request.post<User>('/account/login', user),
-  register: (user: UserFormValues) => request.post<User>('/account/register', user)
-}
+  current: () => request.get<User>("/account"),
+  login: (user: UserFormValues) => request.post<User>("/account/login", user),
+  register: (user: UserFormValues) => request.post<User>("/account/register", user),
+};
+
+const Profile = {
+  get: (username: string) => request.get<any>(`/profiles/${username}`),
+  uploadPhoto: (file: Blob) => {
+    let formData = new FormData();
+    formData.append("File", file);
+    return axios.post<Photo>("photo", formData, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
+  },
+  setMainPhoto: (id: string) => request.post(`/photo/${id}/setmain`, {}),
+  deletePhoto: (id: string) => request.del(`/photo/${id}`),
+};
 
 const agent = {
   Activities,
-  Account
+  Account,
+  Profile,
 };
 
 export default agent;

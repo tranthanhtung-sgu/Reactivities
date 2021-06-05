@@ -37,6 +37,7 @@ namespace Application.Photos
                     .FirstOrDefaultAsync(x => x.UserName == _userAccessor.GetUserName());
                 if(user == null) return null;
 
+
                 var photoUploadResult = await _photoAccessor.AddPhotoAsync(request.File);
 
                 var photo = new Photo 

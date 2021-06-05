@@ -15,20 +15,21 @@ import LoginForm from "../../feature/users/LoginForm";
 import { useStore } from "../stores/store";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
+import ProfilePage from "../../feature/profiles/ProfilePage";
 
 function App() {
   const locaction = useLocation();
-  const {commonStore, userStore} = useStore();
+  const { commonStore, userStore } = useStore();
 
   useEffect(() => {
     if (commonStore.token) {
-      userStore.getUser().finally(() => commonStore.setApploaded()); 
+      userStore.getUser().finally(() => commonStore.setApploaded());
     } else {
       commonStore.setApploaded();
     }
-  }, [commonStore, userStore])
+  }, [commonStore, userStore]);
 
-  if(!commonStore.appLoaded) return <LoadingComponent content='Loading...' />
+  if (!commonStore.appLoaded) return <LoadingComponent content="Loading..." />;
 
   return (
     <>
@@ -46,10 +47,10 @@ function App() {
                 <Route exact path={"/activities"} component={ActivityDashboard} />
                 <Route path={"/activities/:id"} component={ActivityDetails} />
                 <Route key={locaction.key} path={["/createActivity", "/manage/:id"]} component={ActivityForm} />
-                <Route path={'/server-error'} component={ServerErrors} />
-                <Route path={'/login'} component={LoginForm} />
+                <Route path={"/server-error"} component={ServerErrors} />
+                <Route path={"/login"} component={LoginForm} />
+                <Route path={"/profiles/:username"} component={ProfilePage} />
                 <Route component={NotFound} />
-
               </Switch>
             </Container>
           </>

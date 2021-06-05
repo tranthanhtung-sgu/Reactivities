@@ -46,7 +46,10 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                 <Header size="huge" content={activity.title} style={{ color: "white" }} />
                 <p>{format(activity.date!, "dd MMM yyyy")}</p>
                 <p>
-                  Hosted by <strong>{activity.host?.username}</strong>
+                  Hosted by{" "}
+                  <Link to={`/profiles/${activity.host?.username}`}>
+                    <strong>{activity.host?.username}</strong>
+                  </Link>
                 </p>
               </Item.Content>
             </Item>
@@ -63,7 +66,13 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
               content={activity.isCancelled ? "Re-activate Activity" : "Cancel Activity"}
               onClick={cancelActivityToggle}
             ></Button>
-            <Button disabled={activity.isCancelled} as={Link} to={`/manage/${activity.id}`} color="orange" floated="right">
+            <Button
+              disabled={activity.isCancelled}
+              as={Link}
+              to={`/manage/${activity.id}`}
+              color="orange"
+              floated="right"
+            >
               Manage Event
             </Button>
           </>

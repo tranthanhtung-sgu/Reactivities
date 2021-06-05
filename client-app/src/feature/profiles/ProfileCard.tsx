@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Button, Card, Grid, GridColumn, Image } from "semantic-ui-react";
 // import { Card, Container, Grid, GridRow, Header, Icon, Image } from "semantic-ui-react";
 import { Profile } from "../../app/layout/models/profile";
-import "./profileCard.css";
 
 interface Props {
   profile: Profile;
@@ -17,10 +16,18 @@ function ProfileCard({ profile }: Props) {
         <Card.Content>
           <Grid columns={2}>
             <GridColumn width="6">
-              <Image size="small" floated="left" circular src="/assets/user.png" />
+              <Image
+                as={Link}
+                to={`/profiles/${profile.username}`}
+                size="small"
+                circular
+                src={profile.image || "/assets/user.png"}
+              />
             </GridColumn>
             <GridColumn width="10">
-              <Card.Description as='h2' style={{ marginBottom: 20 }}>{profile.displayName}</Card.Description>
+              <Card.Description as={"h2"} style={{ marginBottom: 20 }}>
+                <Link to={`/profiles/${profile.username}`}>{profile.displayName}</Link>
+              </Card.Description>
               <Card.Description style={{ marginBottom: 10 }}>
                 <i className="fas fa-user-friends"> </i>&nbsp; &nbsp; Steve wants to add you to the group{" "}
                 <strong>best friends</strong>
