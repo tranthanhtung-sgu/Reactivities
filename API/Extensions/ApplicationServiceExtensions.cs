@@ -38,6 +38,7 @@ namespace API.Extensions
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddSignalR();
 
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();

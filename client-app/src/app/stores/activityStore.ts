@@ -81,16 +81,14 @@ export default class ActivityStore {
     const user = store.userStore.user;
     if (user) {
       //Check user hiện tại có tham gia không ??
-      activity.isGoing = activity.attendees?.some(
-        a => a.username === user.username     
-      );
+      activity.isGoing = activity.attendees?.some((a) => a.username === user.username);
       // Check user hiện tại có phải là host ??
       activity.isHost = activity.hostUsername === user.username;
       // Tìm ra HOST bằng cách so tên trong danh sách tham gia và tên hostUsername
-      activity.host = activity.attendees?.find(x => x.username === activity.hostUsername);
+      activity.host = activity.attendees?.find((x) => x.username === activity.hostUsername);
     }
     activity.date = new Date(activity.date!);
-    this.activityRegistry.set(activity.id, activity);    
+    this.activityRegistry.set(activity.id, activity);
   }
 
   setLoadingInitial = (state: boolean) => {
@@ -102,7 +100,7 @@ export default class ActivityStore {
     const attendance = new Profile(user!);
     try {
       await agent.Activities.create(activity);
-      const newActivity = new Activity(activity); 
+      const newActivity = new Activity(activity);
       newActivity.hostUsername = user?.username;
       newActivity.attendees = [attendance];
       this.setActivity(newActivity);
@@ -119,7 +117,7 @@ export default class ActivityStore {
       await agent.Activities.update(activity);
       runInAction(() => {
         if (activity.id) {
-          let updateActivity = {...this.getActivity(activity.id), ...activity};
+          let updateActivity = { ...this.getActivity(activity.id), ...activity };
           this.activityRegistry.set(activity.id, updateActivity as Activity);
           this.selectedActivity = updateActivity as Activity;
         }
@@ -147,9 +145,10 @@ export default class ActivityStore {
     try {
       await agent.Activities.attend(this.selectedActivity!.id);
       runInAction(() => {
-        if(this.selectedActivity!.isGoing) {
-          this.selectedActivity!.attendees = this.selectedActivity!.attendees
-              ?.filter(a => a.username !== user?.username);
+        if (this.selectedActivity!.isGoing) {
+          this.selectedActivity!.attendees = this.selectedActivity!.attendees?.filter(
+            (a) => a.username !== user?.username
+          );
           this.selectedActivity!.isGoing = false;
         } else {
           const attendee = new Profile(user!);
@@ -157,13 +156,13 @@ export default class ActivityStore {
           this.selectedActivity!.isGoing = true;
         }
         this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
-      })
+      });
     } catch (error) {
       console.log(error);
     } finally {
-      runInAction(() => this.loading = false)
+      runInAction(() => (this.loading = false));
     }
-  }
+  };
 
   cancelActivityToggle = async () => {
     this.loading = true;
@@ -172,13 +171,16 @@ export default class ActivityStore {
       runInAction(() => {
         this.selectedActivity!.isCancelled = !this.selectedActivity!.isCancelled;
         this.activityRegistry.set(this.selectedActivity!.id, this.selectedActivity!);
-      })
+      });
     } catch (error) {
       console.log(error);
     } finally {
       runInAction(() => {
         this.loading = false;
-      })
+      });
     }
-  }
+  };
+  clearSelectedActivity = () => {
+    this.selectedActivity = undefined;
+  };
 }
