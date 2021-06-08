@@ -1,6 +1,7 @@
 using System.Linq;
 using Application.Activites;
 using Application.Comments;
+using Application.Posts;
 using AutoMapper;
 using Domain;
 
@@ -12,9 +13,14 @@ namespace Application.Core
         {
             string currentUsername = null;
             CreateMap<Activity, Activity>();
+            CreateMap<Post, Post>();
             CreateMap<Activity, ActivityDto>()
                 .ForMember(d => d.HostUsername, o => o.MapFrom(s => s.Attendees
                     .FirstOrDefault(x => x.IsHost).AppUser.UserName));
+            CreateMap<Post, PostDto>()
+                .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName));
+            CreateMap<Profiles.Profile, ProfileDto>();
             CreateMap<ActivityAttendee, AttendeeDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.AppUser.UserName))

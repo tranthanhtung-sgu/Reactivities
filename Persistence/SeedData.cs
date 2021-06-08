@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence
 {
@@ -12,7 +13,7 @@ namespace Persistence
         public static async Task SeedData(DataContext context,
             UserManager<AppUser> userManager)
         {
-            if (!userManager.Users.Any() && !context.Activities.Any())
+            if (!userManager.Users.Any() && !context.Activities.Any() && !context.Posts.Any())
             {
                 var users = new List<AppUser>
                 {
@@ -24,6 +25,26 @@ namespace Persistence
                 {
                     await userManager.CreateAsync(user, "123456Anht");
                 }
+
+                var posts = new List<Post>
+                {
+                    new Post
+                    {
+                        Author = await userManager.Users.FirstOrDefaultAsync(x=>x.UserName == "tung"),
+                        Caption = "Xin chao toi la Tung",
+                        Comments = null,
+                        Image = "https://res.cloudinary.com/images-store/image/upload/v1622545740/idutyugjcvywsz7qstv6.jpg",
+                        Likes = null
+                    },
+                    new Post
+                    {
+                        Author = await userManager.Users.FirstOrDefaultAsync(x=>x.UserName == "tu"),
+                        Caption = "Em la bin ne",
+                        Comments = null,
+                        Image = "https://res.cloudinary.com/images-store/image/upload/v1622545740/idutyugjcvywsz7qstv6.jpg",
+                        Likes = null
+                    }
+                };
 
                 var activities = new List<Activity>
                 {
@@ -240,6 +261,7 @@ namespace Persistence
                 };
 
                 await context.Activities.AddRangeAsync(activities);
+                await context.Posts.AddRangeAsync(posts);
                 await context.SaveChangesAsync();
             }
         }

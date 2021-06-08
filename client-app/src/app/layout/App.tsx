@@ -16,6 +16,7 @@ import { useStore } from "../stores/store";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
 import ProfilePage from "../../feature/profiles/ProfilePage";
+import Home from "../../feature/Facebook/Home";
 
 function App() {
   const locaction = useLocation();
@@ -41,7 +42,7 @@ function App() {
         render={() => (
           <>
             <NavBar />
-            <Container style={{ marginTop: "7em" }}>
+            <div style={{ marginTop: "7em" }}>
               <Switch>
                 <Route path={"/errors"} component={TestErrors} />
                 <Route exact path={"/activities"} component={ActivityDashboard} />
@@ -50,9 +51,10 @@ function App() {
                 <Route path={"/server-error"} component={ServerErrors} />
                 <Route path={"/login"} component={LoginForm} />
                 <Route path={"/profiles/:username"} component={ProfilePage} />
+                <Route  path={"/home"} component={Home} />
                 <Route component={NotFound} />
               </Switch>
-            </Container>
+            </div>
           </>
         )}
       />

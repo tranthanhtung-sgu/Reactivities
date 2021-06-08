@@ -14,6 +14,9 @@ namespace Persistence
         public DbSet<ActivityAttendee> ActivityAttendees { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserFollowing> UserFollowings { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -46,7 +49,7 @@ namespace Persistence
                     .WithMany(f => f.Followers)
                     .HasForeignKey(o => o.TargetId)
                     .OnDelete(DeleteBehavior.Cascade);
-            });
+            });                
         }
     }
 }

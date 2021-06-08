@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Header, Segment } from "semantic-ui-react";
+import { Button, Container, Header, Segment } from "semantic-ui-react";
 import axios from "axios";
 import ValidationsError from "./ValidationError";
 
@@ -32,7 +32,7 @@ export default function TestErrors() {
   }
 
   return (
-    <>
+    <Container>
       <Header as="h1" content="Test Error component" />
       <Segment>
         <Button.Group widths="7">
@@ -45,6 +45,6 @@ export default function TestErrors() {
         </Button.Group>
       </Segment>
       {errors && <ValidationsError errors={errors} />}
-    </>
+    </Container>
   );
 }

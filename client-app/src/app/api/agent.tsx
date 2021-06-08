@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { Activity, ActivityFormValues } from "../layout/models/activity";
+import { Post, PostFormValues } from "../layout/models/post";
 import { Photo } from "../layout/models/profile";
 import { User, UserFormValues } from "../layout/models/user";
 import { store } from "../stores/store";
@@ -102,10 +103,19 @@ const Profile = {
     request.get<any[]>(`/follow/${username}?predicate=${predicate}`),
 };
 
+const Posts = {
+  list: () => request.get<Post[]>("/post"),
+  detail: (id: string) => request.get<Post>(`/post/${id}`),
+  create: (post: PostFormValues) => request.post<void>(`/post`, post),
+  update: (post: PostFormValues) => request.put<void>(`/post/${post.id}`, post),
+  del: (id: string) => request.del<void>(`/post/${id}`),
+};
+
 const agent = {
   Activities,
   Account,
   Profile,
+  Posts,
 };
 
 export default agent;
