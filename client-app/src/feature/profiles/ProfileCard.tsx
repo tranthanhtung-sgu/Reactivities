@@ -4,12 +4,21 @@ import { Link } from "react-router-dom";
 import { Button, Card, Grid, GridColumn, Image } from "semantic-ui-react";
 // import { Card, Container, Grid, GridRow, Header, Icon, Image } from "semantic-ui-react";
 import { Profile } from "../../app/layout/models/profile";
+import { useStore } from "../../app/stores/store";
 
 interface Props {
   profile: Profile;
 }
 
 function ProfileCard({ profile }: Props) {
+  const {
+    profileStore: { updateFollowing, loading },
+    userStore: { user },
+  } = useStore();
+  function handleFollow(username: string) {
+    profile.following ? updateFollowing(username, false) : updateFollowing(username, true);
+  }
+  if (profile.username === user?.username) return null;
   return (
     <>
       <Card style={{ width: 400, borderRadius: 10 }}>
@@ -29,11 +38,10 @@ function ProfileCard({ profile }: Props) {
                 <Link to={`/profiles/${profile.username}`}>{profile.displayName}</Link>
               </Card.Description>
               <Card.Description style={{ marginBottom: 10 }}>
-                <i className="fas fa-user-friends"> </i>&nbsp; &nbsp; Steve wants to add you to the group{" "}
-                <strong>best friends</strong>
+                <i className="fas fa-user-friends"> </i>&nbsp; {profile.followersCount} người theo dõi
               </Card.Description>
               <Card.Description>
-                <i className="fas fa-user-friends"></i>&nbsp; &nbsp; Steve wants to add you to the group{" "}
+                <i className="fas fa-user-friends"></i>&nbsp; Steve wants to add you to the group{" "}
                 <strong>best friends</strong>
               </Card.Description>
             </GridColumn>
@@ -46,9 +54,10 @@ function ProfileCard({ profile }: Props) {
             </Button>
             <Button
               style={{ width: 150, marginRight: 10, borderRadius: 5, backgroundColor: "#f0f2f5", color: "black" }}
-              color="grey"
+              onClick={() => handleFollow(profile.username)}
+              loading={loading}
             >
-              <i className="fas fa-user-plus"></i> Thêm bạn bè
+              {profile.following ? "Đã theo dõi" : "Theo dõi"}
             </Button>
             <Button style={{ width: 30, marginRight: 10, borderRadius: 5, backgroundColor: "#f0f2f5", color: "black" }}>
               <i className="fas fa-ellipsis-h"></i>

@@ -8,9 +8,10 @@ import Post from "../posts/Post";
 
 interface Props {
   profile: Profile;
+  button: string;
 }
 
-export default observer(function ProfileMain({ profile }: Props) {
+export default observer(function ProfileMain({ profile, button }: Props) {
   const {
     profileStore: { isCurrentUser, uploadPhoto, loadingUpload, loading, setMainPhoto, deletePhoto },
   } = useStore();

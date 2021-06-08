@@ -10,12 +10,27 @@ import {
 } from "mdb-react-ui-kit";
 import { observer } from "mobx-react-lite";
 import { Profile } from "../../app/layout/models/profile";
+import { useStore } from "../../app/stores/store";
+import { Link, useRouteMatch } from "react-router-dom";
 
 interface Props {
   profile: Profile;
+  button: string;
+  setButton: (name: string) => void;
 }
 
-export default observer(function ProfileHeader({ profile }: Props) {
+export default observer(function ProfileHeader({ profile, button, setButton }: Props) {
+  const {
+    userStore: { user },
+    profileStore: { updateFollowing },
+  } = useStore();
+
+  let { url } = useRouteMatch();
+
+  function handleFollow(username: string) {
+    profile.following ? updateFollowing(username, false) : updateFollowing(username, true);
+  }
+
   return (
     <div className="container" style={{ marginTop: "-45px" }}>
       {/* Section: Images */}
@@ -38,7 +53,6 @@ export default observer(function ProfileHeader({ profile }: Props) {
         </div>
       </section>
       {/* Section: Images */}
-
       {/* Section: User data */}
       <section className="text-center border-bottom">
         <div className="row d-flex justify-content-center">
@@ -46,9 +60,9 @@ export default observer(function ProfileHeader({ profile }: Props) {
             <h2>
               <strong>{profile.displayName}</strong>
             </h2>
-            <span style={{ marginRight: "10px", fontSize: "20px" }}>200 người theo dõi</span>
+            <span style={{ marginRight: "10px", fontSize: "20px" }}>{profile.followersCount} người theo dõi</span>
             <i className="far fa-dot-circle" style={{ fontSize: "10px" }}></i>
-            <span style={{ marginLeft: "10px", fontSize: "20px" }}>200 đang theo dõi</span>
+            <span style={{ marginLeft: "10px", fontSize: "20px" }}>{profile.followingCount} đang theo dõi</span>
             <p className="text-muted fs-5 m-4">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis molestiae necessitatibus aut ipsa
               repellat quo eos minus laudantium architecto iure optio magni, accusamus.
@@ -61,18 +75,24 @@ export default observer(function ProfileHeader({ profile }: Props) {
       <section className="py-3 d-flex justify-content-between">
         {/* left buttons */}
         <div className="">
-          <button type="button" className="btn btn-link bg-light fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
-            Bài viết
-          </button>
+          <Link to={`${url}`}>
+            <button type="button" className="btn btn-link bg-light fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
+              Bài viết
+            </button>
+          </Link>
           <button type="button" className="btn btn-link text-reset fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
             Giới thiệu
           </button>
-          <button type="button" className="btn btn-link text-reset fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
-            Bạn bè <small className="text-muted">333</small>
-          </button>
-          <button type="button" className="btn btn-link text-reset fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
-            Ảnh
-          </button>
+          <Link to={`${url}/friends`}>
+            <button type="button" className="btn btn-link text-reset fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
+              Bạn bè <small className="text-muted">333</small>
+            </button>
+          </Link>
+          <Link to={`${url}/images`}>
+            <button type="button" className="btn btn-link text-reset fs-6 rounded-4 mx-1" data-mdb-ripple-color="dark">
+              Ảnh
+            </button>
+          </Link>
 
           <MDBDropdown group className="shadow-0">
             <MDBDropdownToggle className="text-reset fs-6 rounded-4 mx-1" color="link">
@@ -100,8 +120,16 @@ export default observer(function ProfileHeader({ profile }: Props) {
 
         {/* right buttons */}
         <div className="">
-          <MDBBtn className="mx-3 fs-6 rounded-4 mx-1" style={{ width: "200px", height: "36px" }}>
-            <i className="fas fa-plus-circle"></i> Thêm vào tin
+          <MDBBtn
+            className="mx-3 fs-6 rounded-4 mx-1"
+            style={{
+              width: "200px",
+              height: "36px",
+            }}
+            onClick={() => handleFollow(profile.username)}
+          >
+            <i className="fas fa-plus-circle"></i>
+            {profile.username === user?.username ? "Thêm vào tin" : profile.following ? "Huỷ theo dõi" : "Theo dõi"}
           </MDBBtn>
           <MDBBtn color="light" className="fs-6 rounded-4 mx-1" style={{ width: "260px", height: "36px" }}>
             <i className="fas fa-pen"></i> Chỉnh sửa trang cá nhân
@@ -111,4 +139,4 @@ export default observer(function ProfileHeader({ profile }: Props) {
       {/* Section: Buttons */}
     </div>
   );
-})
+});

@@ -22,7 +22,7 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(0);
+    await sleep(500);
     return response;
   },
   (error: AxiosError) => {
@@ -97,6 +97,9 @@ const Profile = {
   },
   setMainPhoto: (id: string) => request.post(`/photo/${id}/setmain`, {}),
   deletePhoto: (id: string) => request.del(`/photo/${id}`),
+  updateFollowing: (username: string) => request.post(`/follow/${username}`, {}),
+  listFollowings: (username: string, predicate: string) =>
+    request.get<any[]>(`/follow/${username}?predicate=${predicate}`),
 };
 
 const agent = {

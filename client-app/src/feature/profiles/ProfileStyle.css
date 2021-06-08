@@ -52,7 +52,7 @@ a.text-muted.underline__like:hover {
   align-items: center;
   background-color: white !important;
   box-shadow: none !important;
-  color: white !important;
+  color: rgb(14, 13, 13) !important;
 }
 
 .btn__options_comment:hover {
@@ -93,4 +93,22 @@ a.text-muted.underline__like:hover {
   text-transform: none !important;
   width: 100%;
   text-align: start;
+}
+.link__underscore__black {
+  color: black;
+}
+.link__underscore__black:hover {
+  color: black;
+  text-decoration: underline;
+}
+.search__follow {
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  outline-width: 0;
+  background-color: rgb(240, 242, 245);
+  border: none;
+  height: 40px;
+  padding-left: 40px;
 }

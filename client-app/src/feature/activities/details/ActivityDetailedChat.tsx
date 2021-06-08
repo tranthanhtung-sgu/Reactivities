@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Segment, Header, Comment, Loader } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import * as Yup from "yup";
-import { formatDistance, formatDistanceToNow } from "date-fns/esm";
+import { formatDistanceToNow } from "date-fns/esm";
 
 interface Props {
   activityId: string;
