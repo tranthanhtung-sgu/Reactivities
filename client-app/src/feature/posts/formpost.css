@@ -1,0 +1,50 @@
+.form__post {
+  position: relative;
+}
+.status__text {
+  margin-top: 10px !important;
+  border: 0 !important;
+  height: 195px !important;
+  font-size: 25px !important;
+  resize: none !important;
+  padding: 10px !important;
+}
+.status__text:focus {
+  outline: none !important;
+}
+.status__text::placeholder {
+  font-size: 25px;
+}
+
+.btn__options_add__image {
+  border-radius: 100% !important;
+  width: 50px !important;
+  height: 50px !important;
+  align-items: center;
+  background-color: white !important;
+  box-shadow: none !important;
+  color: rgb(14, 13, 13) !important;
+  margin-top: 10px;
+}
+
+.btn__options_add__image:hover {
+  background-color: rgb(240, 242, 245) !important;
+  color: green !important;
+}
+.div__add__image {
+  border-radius: 8px;
+  border: 0.5px solid #d4d4d4;
+  padding: 0 10px;
+}
+.button__submit > button {
+  background-color: #1977f2;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  color: white;
+  font-size: 15px !important;
+}
+.button__submit > button:disabled {
+  background-color: #e4e6eb;
+  color: #c0c4c8;
+}

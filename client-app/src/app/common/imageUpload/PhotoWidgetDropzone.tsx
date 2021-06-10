@@ -4,8 +4,9 @@ import { Header, Icon } from "semantic-ui-react";
 
 interface Props {
   setFiles: (files: any) => void;
+  style?: any;
 }
-export default function PhotoWidgetDropzone({ setFiles }: Props) {
+export default function PhotoWidgetDropzone({ setFiles, style }: Props) {
   const dzStyles = {
     border: "dashed 3px #eee",
     borderColor: "#eee",
@@ -35,10 +36,10 @@ export default function PhotoWidgetDropzone({ setFiles }: Props) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()} style={isDragActive ? {...dzStyles, ...dzActive} : dzStyles}>
+    <div {...getRootProps()} style={isDragActive ? { ...dzStyles, ...dzActive } : dzStyles}>
       <input {...getInputProps()} />
-        <Icon name="upload" size="huge" />
-        <Header content='Chọn hoặc thả ảnh vào đây' />
+      <Icon name="upload" size="huge" />
+      <Header content="Chọn hoặc thả ảnh vào đây" />
     </div>
   );
 }

@@ -19,7 +19,8 @@ namespace Application.Core
                     .FirstOrDefault(x => x.IsHost).AppUser.UserName));
             CreateMap<Post, PostDto>()
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
-                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName));
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
+                .ForMember(d => d.HostImage, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));
             CreateMap<Profiles.Profile, ProfileDto>();
             CreateMap<ActivityAttendee, AttendeeDto>()
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.AppUser.DisplayName))

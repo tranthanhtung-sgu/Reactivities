@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Post } from "../layout/models/post";
+import { Post, PostFormValues } from "../layout/models/post";
 import { store } from "./store";
 
 export default class PostStore {
@@ -16,7 +16,7 @@ export default class PostStore {
   }
 
   get postsByDate() {
-    return Array.from(this.postRegistry.values()).sort((a, b) => a.createdAt!.getTime() - b.createdAt!.getTime());
+    return Array.from(this.postRegistry.values()).sort((a, b) => b.createdAt!.getTime() - a.createdAt!.getTime());
   }
 
   get groupedPost() {
@@ -85,4 +85,31 @@ export default class PostStore {
     post.createdAt = new Date(post.createdAt!);
     this.postRegistry.set(post.id, post);
   }
+  createPost = async (postForm: PostFormValues) => {
+    this.loading = true;
+    try {
+      if (
+        store.userStore.user?.username === store.profileStore.profile?.username ||
+        store.profileStore.profile == null
+      ) {
+        await agent.Posts.create(postForm).then((post) => {
+          console.log(post);
+        });
+        runInAction(() => {
+          const post = new Post(postForm);
+          post.username = store.userStore.user!.username;
+          post.createdAt = new Date();
+          post.displayName = store.userStore.user!.displayName;
+          post.isHost = true;
+          if (postForm !== null && postForm !== undefined && postForm.image) {
+            post.image = URL.createObjectURL(postForm.image);
+          }
+          this.setPost(post);
+        });
+        store.modalStore.closeModal();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }

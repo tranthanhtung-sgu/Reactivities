@@ -33,7 +33,7 @@ namespace Application.Posts
             public async Task<Result<PostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var post = await _context.Posts
-                    .Include(x => x.Author)
+                    .Include(x => x.Author).ThenInclude(y => y.Photos)
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider, new { currentUsername = _userAccessor.GetUserName() })
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
                 return Result<PostDto>.Success(post);

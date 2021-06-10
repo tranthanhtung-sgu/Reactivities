@@ -7,6 +7,7 @@ export interface Post {
   caption: string;
   image: string;
   createdAt: Date;
+  hostImage: string;
   comments: ChatComment[];
   likes: Like[];
   isHost?: boolean;
@@ -19,7 +20,7 @@ export class Post implements Post {
 export class PostFormValues {
   id?: string = undefined;
   caption: string = "";
-  image: string = "";
+  image: any = null;
 
   constructor(post?: PostFormValues) {
     if (post) {

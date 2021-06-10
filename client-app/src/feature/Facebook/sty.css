@@ -56,3 +56,13 @@ body {
 .nav__right__item:hover {
   background-color: #dbdee3;
 }
+
+.btn__options_add__image {
+  border-radius: 100% !important;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  background-color: white !important;
+  box-shadow: none !important;
+  color: rgb(14, 13, 13) !important;
+}

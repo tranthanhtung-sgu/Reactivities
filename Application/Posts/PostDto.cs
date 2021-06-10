@@ -11,6 +11,7 @@ namespace Application.Posts
         public string DisplayName { get; set; }
         public string Caption { get; set; }
         public string Image { get; set; }
+        public string HostImage { get; set; }
         public DateTime CreatedAt { get; set; }
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Like> Likes { get; set; }

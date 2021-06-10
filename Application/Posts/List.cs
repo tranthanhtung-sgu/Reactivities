@@ -32,7 +32,7 @@ namespace Application.Posts
             public async Task<Result<List<PostDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var posts = await _context.Posts
-                    .Include(x => x.Author)
+                    .Include(x => x.Author).ThenInclude(y => y.Photos)
                     .ProjectTo<PostDto>(_mapper.ConfigurationProvider,
                         new { currentUsername = _userAccessor.GetUserName() })
                     .ToListAsync(cancellationToken);

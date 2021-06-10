@@ -106,7 +106,17 @@ const Profile = {
 const Posts = {
   list: () => request.get<Post[]>("/post"),
   detail: (id: string) => request.get<Post>(`/post/${id}`),
-  create: (post: PostFormValues) => request.post<void>(`/post`, post),
+  create: (post: PostFormValues) => {
+    let formData = new FormData();
+    formData.append("Image", post.image);
+    formData.append("Caption", post.caption);
+    formData.append("Id", post.id!);
+    return axios.post<Post>("post", formData, {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    });
+  },
   update: (post: PostFormValues) => request.put<void>(`/post/${post.id}`, post),
   del: (id: string) => request.del<void>(`/post/${id}`),
 };

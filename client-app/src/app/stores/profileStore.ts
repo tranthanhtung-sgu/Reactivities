@@ -87,6 +87,10 @@ export default class ProfileStore {
           this.profile.photos.find((x) => x.isMain)!.isMain = false;
           this.profile.photos.find((x) => x.id === photo.id)!.isMain = true;
           this.profile.image = photo.url;
+          store.postStore.postsByDate.forEach((post) => {
+            post.hostImage = photo.url;
+            store.postStore.setPost(post);
+          });
           this.loading = false;
         }
         this.loading = false;

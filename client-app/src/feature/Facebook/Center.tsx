@@ -2,12 +2,13 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { useStore } from "../../app/stores/store";
+import FormPost from "../posts/FormPost";
 import Post from "../posts/Post";
 export default observer(function Center() {
   const {
-    profileStore: { loadProfile, profile, loadingProfile, setActiveTab },
     postStore: { postsByDate },
   } = useStore();
+  const { modalStore } = useStore();
   return (
     <div className="center__content" style={{ paddingLeft: 50, paddingRight: 50 }}>
       <div>
@@ -115,6 +116,7 @@ export default observer(function Center() {
                 />
               </a>
               <button
+                onClick={() => modalStore.openModal(<FormPost />)}
                 style={{ marginLeft: 20, background: "#f0f2f5", textTransform: "none", textAlign: "start" }}
                 className="btn btn-block btn-rounded fs-5 text-muted"
               >
@@ -154,7 +156,7 @@ export default observer(function Center() {
           </div>
         </div>
         {postsByDate.map((post) => (
-          <Post post={post} />
+          <Post key={post.id} post={post} />
         ))}
       </div>
     </div>

@@ -15,7 +15,12 @@ export default observer(function Post({ post }: Props) {
         <div className="card-body">
           <div className="d-flex">
             <a href="/">
-              <img src={"/assets/user.png"} alt="" style={{ height: "50px" }} className="rounded-circle border" />
+              <img
+                src={post.hostImage || "/assets/user.png"}
+                alt=""
+                style={{ height: "50px" }}
+                className="rounded-circle border"
+              />
             </a>
             <div style={{ marginLeft: "10px" }}>
               <a href="/" className="text-dark mb-0">
@@ -29,7 +34,7 @@ export default observer(function Post({ post }: Props) {
           </div>
           <p className="mt-3">{post.caption}</p>
         </div>
-        <img src="/assets/user.png" alt="" />
+        <img src={post.image} alt="" />
         <div className="card-body">
           <div className="d-flex justify-content-between">
             <div className="icon__like d-flex">

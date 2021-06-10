@@ -10,7 +10,7 @@ namespace API.Controllers
     public class PostController : BaseApiController
     {
         [HttpPost]
-        public async Task<IActionResult> CreatePost(Post post)
+        public async Task<IActionResult> CreatePost([FromForm] PostCreate post)
         {
             return HandleResult(await Mediator.Send(new Create.Command { Post = post }));
         }
