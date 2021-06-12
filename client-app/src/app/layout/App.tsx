@@ -16,6 +16,7 @@ import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
 import ProfilePage from "../../feature/profiles/ProfilePage";
 import Home from "../../feature/Facebook/Home";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const locaction = useLocation();
@@ -44,13 +45,13 @@ function App() {
             <div style={{ marginTop: "7em" }}>
               <Switch>
                 <Route path={"/errors"} component={TestErrors} />
-                <Route exact path={"/activities"} component={ActivityDashboard} />
-                <Route path={"/activities/:id"} component={ActivityDetails} />
-                <Route key={locaction.key} path={["/createActivity", "/manage/:id"]} component={ActivityForm} />
-                <Route path={"/server-error"} component={ServerErrors} />
-                <Route path={"/login"} component={LoginForm} />
-                <Route path={"/profiles/:username"} component={ProfilePage} />
-                <Route  path={"/home"} component={Home} />
+                {/* <Route exact path={"/activities"} component={ActivityDashboard} /> */}
+                <PrivateRoute path={"/activities/:id"} component={ActivityDetails} />
+                <PrivateRoute key={locaction.key} path={["/createActivity", "/manage/:id"]} component={ActivityForm} />
+                <PrivateRoute path={"/server-error"} component={ServerErrors} />
+                <PrivateRoute path={"/login"} component={LoginForm} />
+                <PrivateRoute path={"/profiles/:username"} component={ProfilePage} />
+                <PrivateRoute path={"/home"} component={Home} />
                 <Route component={NotFound} />
               </Switch>
             </div>

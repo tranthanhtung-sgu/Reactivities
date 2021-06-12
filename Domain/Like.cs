@@ -6,7 +6,9 @@ namespace Domain
     {
         public Guid Id { get; set; }
         public AppUser Author { get; set; }
-        enum Reacts
+        public Post Post { get; set; }
+        public Reacts reacts { get; set; }
+        public enum Reacts
         {
             Like,
             Love,

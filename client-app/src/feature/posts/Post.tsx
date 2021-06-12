@@ -1,14 +1,32 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { format } from "date-fns";
+import { Field, FieldProps, Form, Formik } from "formik";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Post } from "../../app/layout/models/post";
+import { useStore } from "../../app/stores/store";
+import * as Yup from "yup";
+import { formatDistanceToNow } from "date-fns/esm";
+import { Loader } from "semantic-ui-react";
+import vi from "date-fns/locale/vi";
 
 interface Props {
   post: Post;
 }
 
 export default observer(function Post({ post }: Props) {
+  const {
+    commentStorePost,
+    userStore: { user },
+  } = useStore();
+  useEffect(() => {
+    if (post) {
+      commentStorePost.createHubConnectionPost(post.id);
+    }
+    return () => {
+      commentStorePost.clearComments();
+    };
+  }, [commentStorePost, post]);
   return (
     <>
       <div className="card w-100 rounded-6 mt-3">
@@ -67,17 +85,18 @@ export default observer(function Post({ post }: Props) {
                 className="fas fa-laugh-squint"
               ></i>
               <a href="#" className="text-muted underline__like">
-                42
+                {post.likes.length}
               </a>
             </div>
             <a href="" style={{ marginTop: "7px", marginRight: "5px" }} className="text-muted">
-              400 bình luận
+              {post.comments.length} bình luận
             </a>
           </div>
           <hr style={{ marginBottom: -1 }} />
           <div className="like_comment_share">
             <div style={{ width: "600px" }} className="d-flex justify-content-between">
               <button
+                onClick={() => commentStorePost.addLike(post.id, post.id)}
                 className="btn btn-light rounded-3 fs-5 btn-mind"
                 style={{
                   background: "#f0f2f5",
@@ -113,57 +132,85 @@ export default observer(function Post({ post }: Props) {
             </div>
           </div>
           <hr style={{ marginTop: -1 }} />
-          <div className="d-flex mb-2">
-            <a href="/">
-              <img
-                src="https://res.cloudinary.com/images-store/image/upload/v1622545740/idutyugjcvywsz7qstv6.jpg"
-                alt=""
-                style={{ height: "50px" }}
-                className="rounded-circle border"
-              />
-            </a>
-            <div className="d-flex align-items-center">
-              <div className="comment__content">
-                <div className="comment__others" style={{ marginLeft: "10px", background: "rgb(240,242,245)" }}>
-                  <a href="/" className="text-dark mb-0">
-                    <strong>Trần Thanh Tùng</strong>
+          {post.comments.map((comment) => (
+            <div key={comment.id} className="d-flex mb-2">
+              <a href={`/profiles/${comment.username}`}>
+                <img
+                  src={comment.image || "/assets/user.png"}
+                  alt=""
+                  style={{ height: "50px" }}
+                  className="rounded-circle border"
+                />
+              </a>
+              <div className="d-flex align-items-center">
+                <div className="comment__content">
+                  <div className="comment__others" style={{ marginLeft: "10px", background: "rgb(240,242,245)" }}>
+                    <a href={`/profiles/${comment.username}`} className="text-dark mb-0">
+                      <strong>{comment.displayName}</strong>
+                    </a>
+                    <p className="pt-1 pb-2" style={{ whiteSpace: "pre-wrap" }}>
+                      {comment.body}
+                    </p>
+                  </div>
+                  <a href="#" className="text-muted" style={{ marginLeft: "30px" }}>
+                    <strong>Thích</strong>
                   </a>
-                  <p className="pt-1 pb-2">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore reiciendis ea ipsam cumque
-                    repellat quibusdam, explicabo, dolor error temporibus rerum assumenda rem dicta placeat,
-                    exercitationem ipsum animi enim porro! Asperiores. Lorem ipsum dolor, sit amet consectetur
-                    adipisicing elit. Tempore reiciendis ea ipsam cumque repellat quibusdam, explicabo, dolor error
-                    temporibus rerum assumenda rem dicta placeat, exercitationem ipsum animi enim porro! Asperiores.
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore reiciendis ea ipsam cumque
-                    repellat quibusdam, explicabo, dolor error temporibus rerum assumenda rem dicta placeat,
-                    exercitationem ipsum animi enim porro! Asperiores.
-                  </p>
+                  <a href="#" className="text-muted" style={{ marginLeft: "10px" }}>
+                    <strong>Trả lời</strong>
+                  </a>
+                  <a href="#" className="text-muted" style={{ marginLeft: "10px" }}>
+                    <small>{formatDistanceToNow(new Date(comment.createdAt), { locale: vi })} truớc</small>
+                  </a>
                 </div>
-                <a href="#" className="text-muted" style={{ marginLeft: "30px" }}>
-                  <strong>Thích</strong>
-                </a>
-                <a href="#" className="text-muted" style={{ marginLeft: "10px" }}>
-                  <strong>Trả lời</strong>
-                </a>
-                <a href="#" className="text-muted" style={{ marginLeft: "10px" }}>
-                  <small>15 phút</small>
-                </a>
+                <button className="btn btn__options_comment mb-3" style={{ marginLeft: 10, textAlign: "center" }}>
+                  <i className="fas fa-ellipsis-h" style={{ marginLeft: -4 }}></i>
+                </button>
               </div>
-              <button className="btn btn__options_comment mb-3" style={{ marginLeft: 10, textAlign: "center" }}>
-                <i className="fas fa-ellipsis-h" style={{ marginLeft: -4 }}></i>
-              </button>
             </div>
-          </div>
+          ))}
           <div className="d-flex">
             <a href="/">
               <img
-                src="https://res.cloudinary.com/images-store/image/upload/v1622545740/idutyugjcvywsz7qstv6.jpg"
+                src={user?.image || "/assets/user.png"}
                 alt=""
                 style={{ height: "50px" }}
-                className="rounded-circle border"
+                className="rounded-circle border mt-3"
               />
             </a>
-            <input style={{ width: 480, marginLeft: 20 }} name="comment" placeholder="Viết bình luận" />
+            <Formik
+              onSubmit={(values, { resetForm }) => commentStorePost.addComment(values, post.id).then(() => resetForm())}
+              initialValues={{ body: "" }}
+              validationSchema={Yup.object({
+                body: Yup.string().required(),
+              })}
+            >
+              {({ isSubmitting, isValid, handleSubmit }) => (
+                <Form className="ui form">
+                  <Field name="body">
+                    {(props: FieldProps) => (
+                      <div style={{ position: "relative", marginTop: 10 }}>
+                        <Loader active={isSubmitting} />
+                        <textarea
+                          style={{ width: 500, marginLeft: 20 }}
+                          placeholder="Viết bình luận..."
+                          rows={2}
+                          {...props.field}
+                          onKeyPress={(e) => {
+                            if (e.key === "Enter" && e.shiftKey) {
+                              return;
+                            }
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              isValid && handleSubmit();
+                            }
+                          }}
+                        ></textarea>
+                      </div>
+                    )}
+                  </Field>
+                </Form>
+              )}
+            </Formik>
           </div>
         </div>
       </div>

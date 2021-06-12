@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { makeAutoObservable, runInAction } from "mobx";
+import { history } from "../..";
 import agent from "../api/agent";
 import { Post, PostFormValues } from "../layout/models/post";
 import { store } from "./store";
@@ -101,12 +102,15 @@ export default class PostStore {
           post.createdAt = new Date();
           post.displayName = store.userStore.user!.displayName;
           post.isHost = true;
+          post.comments = [];
+          post.likes = [];
           if (postForm !== null && postForm !== undefined && postForm.image) {
             post.image = URL.createObjectURL(postForm.image);
           }
           this.setPost(post);
         });
         store.modalStore.closeModal();
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

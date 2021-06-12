@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { observer } from "mobx-react-lite";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useStore } from "../../app/stores/store";
 import FormPost from "../posts/FormPost";
 import Post from "../posts/Post";
 export default observer(function Center() {
   const {
     postStore: { postsByDate },
+    userStore: { user },
   } = useStore();
   const { modalStore } = useStore();
   return (
@@ -107,9 +109,9 @@ export default observer(function Center() {
         <div className="card w-100 rounded-6">
           <div className="card-body">
             <div className="d-flex">
-              <a href="/">
+              <a href={`/profiles/${user?.username}`}>
                 <img
-                  src="https://res.cloudinary.com/images-store/image/upload/v1622545740/idutyugjcvywsz7qstv6.jpg"
+                  src={user?.image || "/assets/user.png"}
                   alt=""
                   style={{ height: "50px" }}
                   className="rounded-circle border mr-2"

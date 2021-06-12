@@ -1,6 +1,7 @@
 using System.Linq;
 using Application.Activites;
 using Application.Comments;
+using Application.Likes;
 using Application.Posts;
 using AutoMapper;
 using Domain;
@@ -43,6 +44,13 @@ namespace Application.Core
                 .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
                 .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
                 .ForMember(d => d.Image, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url));
+            CreateMap<Like, LikeDto>()
+                .ForMember(d => d.Image, o => o.MapFrom(s => s.Author.Photos.FirstOrDefault(x => x.IsMain).Url))
+                .ForMember(d => d.DisplayName, o => o.MapFrom(s => s.Author.DisplayName))
+                .ForMember(d => d.Username, o => o.MapFrom(s => s.Author.UserName))
+                .ForMember(d => d.IsLike, o => o.MapFrom(s => s.Post.Likes.Any(x => x.Author.UserName == currentUsername)))
+                .ForMember(d => d.React, o => o.MapFrom(s => s.reacts.ToString()));
+
 
         }
     }

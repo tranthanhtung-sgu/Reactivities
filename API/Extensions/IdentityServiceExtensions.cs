@@ -49,6 +49,10 @@ namespace API.Extensions
                             {
                                 context.Token = accessToken;
                             }
+                            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatPost"))
+                            {
+                                context.Token = accessToken;
+                            }
                             return Task.CompletedTask;
                         }
                     };

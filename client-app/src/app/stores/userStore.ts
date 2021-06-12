@@ -23,7 +23,8 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
-      history.push("/activities");
+      history.push("/home");
+      window.location.reload();
       store.modalStore.closeModal();
     } catch (error) {
       throw error;
@@ -38,7 +39,8 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
-      history.push("/activities");
+      history.push("/home");
+      window.location.reload();
       store.modalStore.closeModal();
     } catch (error) {
       throw error;

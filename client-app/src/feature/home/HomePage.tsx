@@ -13,13 +13,13 @@ export default observer(function HomePage() {
       <Container text>
         <Header as="h1" inverted>
           <Image size="massive" src="/assets/logo.png" alt="logo" style={{ marginBottom: 12 }} />
-          Reactivities
+          Facebook
         </Header>
         {userStore.IsLoggedIn ? (
           <>
-            <Header as="h2" inverted content="Welcome to Reactivities"></Header>
-            <Button as={Link} to={"/activities"} size="huge" inverted>
-              Go to Activites!
+            <Header as="h2" inverted content="Welcome to my facebook"></Header>
+            <Button as={Link} to={"/home"} size="huge" inverted>
+              Go to Facebook clone!
             </Button>
           </>
         ) : (

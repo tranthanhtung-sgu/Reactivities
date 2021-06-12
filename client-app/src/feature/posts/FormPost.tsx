@@ -13,7 +13,7 @@ import MyTextArea from "../../app/common/form/MyTextArea";
 import ImageDropzone from "./ImageDropzone";
 
 export default observer(function FormPost() {
-  const { postStore } = useStore();
+  const { postStore, userStore } = useStore();
   const [files, setFiles] = useState<any>([]);
 
   function handleFormSubmit(post: PostFormValues) {
@@ -45,16 +45,19 @@ export default observer(function FormPost() {
           <hr></hr>
           {/* div name, avatar */}
           <div className="d-flex justify-content-left">
-            <img src="/assets/user.png" alt="avatar" style={{ width: 50, borderRadius: 999 }} />
+            <img
+              src={userStore.user?.image || "/assets/user.png"}
+              alt="avatar"
+              style={{ width: 50, borderRadius: 999 }}
+            />
             <div className="name" style={{ marginLeft: 15 }}>
-              <a href="#" style={{ color: "black" }}>
-                <h5>Trần Thanh Tùng</h5>
+              <a href={`/profiles/${userStore.user?.username}`} style={{ color: "black" }}>
+                <h5>{userStore.user?.displayName}</h5>
               </a>
               <div>
                 <Dropdown pointing="top left" text="Công khai">
                   <Dropdown.Menu>
-                    <Dropdown.Item as={Link} to={`/profiles/tung`} text="Profile" icon="user" />
-                    <Dropdown.Item text="Logout" icon="power" />
+                    <Dropdown.Item as={Link} to={`/profiles/${userStore.user?.username}`} text="Profile" icon="user" />
                   </Dropdown.Menu>
                 </Dropdown>
               </div>
